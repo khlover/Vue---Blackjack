@@ -1,0 +1,136 @@
+     /* resets */
+     * { color: inherit; }
+     input { font: inherit; border: unset; background: unset; }
+     input:focus { outline: unset; }
+     
+     :root {
+         font: 1rem/1.175 "BlinkMacSystemFont", -apple-system, "Roboto", sans-seri;
+     }
+
+     body,html{
+         height:100%;
+         margin: 0;
+     }
+     
+     #app {
+         width: 100%;
+         height: 100%;
+         display: flex;
+         flex-direction: row;
+         font-weight: 900; font-size: 3.4rem;
+         background-image:url("table.png");
+         background-repeat: no-repeat;
+         border: none;
+         outline: none;
+         position: relative;
+     }
+
+     button{
+         margin-right:20px;
+         font-size: 40px;
+         font-style: italic;
+         color:black;
+     }
+
+     #hitMe{
+         position: relative;
+         bottom:130px;
+         left:100px;
+     }
+
+     #stay{
+         position: relative;
+         bottom: 182px;
+         left: 300px;
+     }
+
+     #start{
+         font-size: 80px;
+         font-style: italic;
+         background-color: transparent;
+         border:none;
+         position: relative;
+         left: 500px;
+         bottom: 290px;
+     }
+
+     #start:focus{
+         outline: none;
+         border: none;
+     }
+
+     #start:hover{
+         transform:scale(1.3);
+         color:white;
+     }
+     
+     .hands{
+        position: relative;
+        top:132px; 
+     }
+
+     #playerHand{
+         position: absolute; 
+         top: 237px;
+         left: 97px;
+     }
+
+     #aiHand{
+         position:absolute;
+         left:887px;
+         top:237px;
+     }
+
+     .scores{
+         border: black 3px solid;
+         width:200px;
+         background-color: whitesmoke;
+         color:black;
+         font-style:italic;
+         position: relative;
+         bottom:50px;
+         left: 100px;
+     }
+    
+     img {
+         width: 65px; height: 110px;
+         padding-right: 14px;
+     }
+
+     #result{
+         font-size: 102px;
+         color:white;
+         position: relative;
+         text-align: center;
+         font-style: italic;
+         left:500px;
+         top:150px; 
+     }
+
+     #player{
+         position: relative;
+         top: 70px;
+         left: 180px;
+         font-size: 70px;
+     }
+
+     #dealer{
+         font-size: 70px;
+         position: relative;
+         bottom:70px;
+         left: 980px;
+     }
+
+     #win{
+         color:white;
+         font-style: italic;
+         position: absolute;
+         top:590px; 
+     }
+
+     #loss{
+         color:white;
+         font-style: italic;
+         position: absolute;
+         top:650px;
+     }

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name "viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link rel="stylesheet" href="bj.css">
+    </head>
+
+    <style>
+
+</style>
+
+<body></body>
+    <div id="app">
+           <div class= "hands"id="playerHand">
+
+           <img v-for = "card in playerHand" :src="'deck/' + card + '.png'"></img>
+           <span id="results"><p class="scores" hidden="true" id="playerScore">Total: {{yourScore}}</p></span>
+
+            </div>
+
+            <div class= "hands" id="aiHand">    
+            <img v-for = "card in aiHand" :src="'deck/' + card + '.png'"></img>
+            <p class ="scores" hidden="true" id="aiScore">Total: {{aiScore}}</p>
+            </div>
+
+        <template>
+            <span>
+            <span id="player">{{name}}</p> </span>
+            <p id="dealer">Dealer</p>
+            <button id="start" onclick="app.deal()">Start</button> 
+            <button id="hitMe" hidden=true  onclick="app.hitMe()">Hit Me</button>  
+            <button id="stay" hidden=true onclick="app.stay()">Stay</button> 
+            <p id="result">{{result}}</p>
+        </span>
+
+        <template>
+         <p id="win">Wins:{{wins}}</p>
+         <p id="loss"> Losses:{{loss}}</p>    
+        </template>
+         
+        </template>  
+         
+    </div>
+   
+        <script>
+
+"use strict"
+var app = new Vue({
+el: "#app",
+data: {
+    playerHand: [],
+    name: "Player",
+    aiHand: [],
+    yourScore: 0,
+    aiScore: 0,
+    wins:0,
+    loss:0,
+    result:'',
+    deck: 
+    ["AS","2S","3S","4S","5S","6S","7S","8S","9S","10S","JS","QS","KS",
+    "AC","2C","3C","4C","5C","6C","7C","8C","9C","10C","JC","QC","KC",
+    "AH","2H","3H","4H","5H","6H","7H","8H","9H","10H","JH","QH","KH",
+    "AD","2D","3D","4D","5D","6D","7D","8D","9D","10D","JD","QD","KD",],
+    
+    copydeck: 
+    ["AS","2S","3S","4S","5S","6S","7S","8S","9S","10S","JS","QS","KS",
+    "AC","2C","3C","4C","5C","6C","7C","8C","9C","10C","JC","QC","KC",
+    "AH","2H","3H","4H","5H","6H","7H","8H","9H","10H","JH","QH","KH",
+    "AD","2D","3D","4D","5D","6D","7D","8D","9D","10D","JD","QD","KD",]
+    },
+
+methods: {
+    deal: function(){
+    document.getElementById("start").style.display = "none";
+    document.getElementById("playerScore").style.display = "block";
+    document.getElementById("aiScore").style.display = "block";
+    document.getElementById("hitMe").style.display = "block";
+    document.getElementById("stay").style.display = "block";
+
+    //Resets deck and hands 
+       app.copydeck.forEach((x)=>app.deck.push(x));
+       app.result = '',
+       app.playerHand = [];
+       app.aiHand = [];
+       app.shuffle(app.deck);
+       app.aiHand.push(app.deck.pop(0)); 
+
+       for(let x = 0; x < 2; x++)
+       {
+           app.playerHand.push(app.deck.pop(0));    
+       }
+            app.playerScore()
+            app.ascore()
+
+        if(app.yourScore == 21)
+        {
+            app.result = "BlackJack";
+            app.end(true);
+        }},
+        
+    hitMe: function()
+    {
+        app.playerHand.push(app.deck.pop(0));
+        app.playerScore()
+    }, 
+
+    stay: function(){
+
+       if(app.aiScore <=16)
+       {
+        app.aiHand.push(app.deck.pop(0));
+        app.ascore();
+        app.stay();
+        return; 
+       } 
+
+       if(app.aiScore == 21 && app.aiHand.length == 2)
+        {
+            app.result = "Dealer BlackJack";
+            app.end(false);
+        }
+
+        if(app.aiScore == app.yourScore)
+        {
+            app.end(false);
+            app.result="Loss by Draw";
+            return;
+        }
+
+         if(app.aiScore < 22 && app.aiScore > app.yourScore)
+         {
+           app.end(false);
+           app.result="Lose";
+         } else
+       {
+           app.end(true);
+           app.result="Winner";
+       }
+    },
+
+    end: function(winLose)
+    {
+        if(winLose == true){app.wins++} else{app.loss++};
+        let start = document.getElementById("start")
+        start.style.display = "block";
+        start.innerHTML = "Play Again";
+        document.getElementById("hitMe").style.display = "none";
+        document.getElementById("stay").style.display = "none";
+    },
+
+    //Shuffles deck
+    shuffle: function(array)
+    {  
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there are cards left to shuffle
+    while (0 !== currentIndex) {
+
+    // Pick a card
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current card
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+},
+
+  playerScore: function(){
+      app.yourScore = 0;
+         app.playerHand.forEach(x => {
+       
+            switch(x.slice(0,1)){
+                case "K":
+                    app.yourScore = app.yourScore + 10;
+                    break;
+
+                case "Q":
+                    app.yourScore = app.yourScore + 10;
+                    break;
+
+                case "J":
+                    app.yourScore = app.yourScore + 10;
+                    break;
+
+                case "1":
+                    app.yourScore = app.yourScore + 10;
+                    break;
+
+                case "A":
+                    if(app.yourScore + 11 < 22){
+                        app.yourScore = app.yourScore + 11
+                        break;
+                    } else {
+                        app.yourScore = app.yourScore + 1
+                        break;
+                    }
+
+                default:
+                    app.yourScore = app.yourScore + parseInt(x.slice(0,1))
+            }})
+
+        if(app.yourScore > 21)
+        {
+            app.result = "Busted"
+            app.end(false);
+        } 
+  },
+   
+  ascore: function (){
+    app.aiScore = 0;
+    app.aiHand.forEach(x => 
+    {
+       
+       switch(x.slice(0,1))
+       {
+           case "K":
+               app.aiScore = app.aiScore + 10;
+               break;
+
+           case "Q":
+               app.aiScore = app.aiScore + 10;
+               break;
+
+           case "J":
+               app.aiScore = app.aiScore + 10;
+               break;
+
+           case "1":
+               app.aiScore = app.aiScore + 10;
+               break;
+
+            case "A":
+                if(app.aiScore + 11 < 22){
+                    app.aiScore = app.aiScore + 11
+                    break;
+                    } 
+                    else 
+                    {
+                        app.aiScore = app.aiScore + 1
+                        break;
+                    }
+
+           default:
+               app.aiScore = app.aiScore + parseInt(x.slice(0,1))
+       }
+    }
+  )
+}
+
+}})
+        </script>
+    </body>    
